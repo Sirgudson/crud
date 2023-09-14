@@ -60,5 +60,32 @@ class UsuarioDAO{
         }
     }
 
-    
+    public function delete(Usuario $usuario){
+        try {
+            $sql = "DELETE FROM usuario WHERE id = :id";
+            $p_sql = Conexao::getConexao()->prepare($sql);
+            $p_sql->bindValue(":id",$usuario->getId());
+            return $p_sql->execute();
+        } catch (Exception $e) {
+            print "Erro ao deletar usuário <br>" .$e. '<br>';
+        }
+
+    }
+
+    private function listaUsuarios($row){
+        //Se der erro, tirar o try catch
+        try {
+            $usuario = new Usuario();
+            $usuario->setId($row['id']);
+            $usuario->setNome($row['nome']);
+            $usuario->setSobrenome($row['sobrenome']);
+            $usuario->setIdade($row['idade']);
+            $usuario->setSexo($row['sexo']);
+
+            return $usuario;
+
+        } catch (Exception $e) {
+            print "Erro ao listar usuário <br>" .$e. '<br>';
+        }
+    }
 }
